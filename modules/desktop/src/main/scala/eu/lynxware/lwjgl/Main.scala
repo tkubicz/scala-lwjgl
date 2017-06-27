@@ -1,5 +1,6 @@
 package eu.lynxware.lwjgl
 
+import eu.lynxware.math.Mat4
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw._
 import org.lwjgl.opengl.GL11._
@@ -14,6 +15,9 @@ object Main extends App {
 
   def run(): Unit = {
     println("Hello LWJGL ")
+
+    val mat = Mat4()
+    println(mat)
 
     try {
       init()
