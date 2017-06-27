@@ -1,10 +1,12 @@
 import sbt._
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 
-
 object Dependencies {
 
   private val appCompat = "com.android.support" % "appcompat-v7" % "23.+"
+  private val scalajsDom = "org.scala-js" %%%! "scalajs-dom" % "0.9.1"
+  private val scalajsJQuery = "be.doeraene" %%%! "scalajs-jquery" % "0.9.1"
+  private val scalaTags = "com.lihaoyi" %%%! "scalatags" % "0.6.3"
 
   lazy val printOsInfo = taskKey[Unit]("Task that prints OS info")
 
@@ -59,7 +61,7 @@ object Dependencies {
     "org.lwjgl" % "lwjgl-xxhash" % lwjglVersion % "runtime" classifier lwjglNatives
   )
 
-  val htmlDependencies: Seq[ModuleID] = Seq()
+  val htmlDependencies: Seq[ModuleID] = Seq(scalajsDom, scalajsJQuery, scalaTags)
   val desktopDependencies: Seq[ModuleID] = Seq() ++ lwjgl
   val androidDependencies: Seq[ModuleID] = Seq(appCompat)
 }
