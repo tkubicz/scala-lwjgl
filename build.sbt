@@ -7,28 +7,31 @@ lazy val sharedJvm = shared.jvm
 lazy val sharedJs = shared.js
 
 lazy val android = Project(id = "android", base = file("modules/android"))
-    .enablePlugins(AndroidApp)
-    .settings(
-      libraryDependencies ++= Dependencies.androidDependencies,
-      platformTarget := "android-23"
-    )
-    .dependsOn(sharedJvm)
+  .enablePlugins(AndroidApp)
+  .settings(
+    libraryDependencies ++= Dependencies.androidDependencies,
+    platformTarget := "android-23"
+  )
+  .dependsOn(sharedJvm)
 
 lazy val html = Project(id = "html", base = file("modules/html"))
-    .enablePlugins(ScalaJSPlugin)
-    .settings(
-      libraryDependencies ++= Dependencies.htmlDependencies
-      //persistLauncher in Compile := true,
-      //persistLauncher in Test := false
-    )
-    .dependsOn(sharedJs)
+  .enablePlugins(ScalaJSPlugin)
+  .settings(
+    libraryDependencies ++= Dependencies.htmlDependencies
+    //persistLauncher in Compile := true,
+    //persistLauncher in Test := false
+  )
+  .dependsOn(sharedJs)
 
 lazy val desktop = Project(id = "desktop", base = file("modules/desktop"))
-    .settings(
-      libraryDependencies ++= Dependencies.desktopDependencies,
-      fork in run := true
-      //javaOptions in run += "-XstartOnFirstThread"
-    )
-    .dependsOn(sharedJvm)
+  .settings(
+    libraryDependencies ++= Dependencies.desktopDependencies,
+    fork in run := true
+    //javaOptions in run += "-XstartOnFirstThread"
+  )
+  .dependsOn(sharedJvm)
 
-lazy val shared = crossProject.crossType(CrossType.Pure) in file("modules/shared")
+lazy val shared = crossProject.crossType(CrossType.Pure).in(file("modules/shared"))
+  .jvmSettings(
+    exportJars := true
+  )

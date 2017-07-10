@@ -5,8 +5,9 @@ import javax.microedition.khronos.opengles.GL10
 
 import android.app.Activity
 import android.content.Context
-import android.opengl.{GLES20, GLSurfaceView}
+import android.opengl.GLSurfaceView
 import android.os.Bundle
+import eu.lynxware.opengl.GL20Binding._
 
 class OpenGLES20Activity extends Activity {
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -27,14 +28,14 @@ class MyGLSurfaceView(context: Context) extends GLSurfaceView(context) {
 class MyGLRenderer extends GLSurfaceView.Renderer {
 
   override def onSurfaceCreated(gl10: GL10, eglConfig: EGLConfig): Unit = {
-    GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f)
+    clearColor(1.0f, 0.0f, 0.0f, 1.0f)
   }
 
   override def onDrawFrame(gl10: GL10): Unit = {
-    GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+    clear(ColorBufferBit)
   }
 
   override def onSurfaceChanged(unused: GL10, width: Int, height: Int): Unit = {
-    GLES20.glViewport(0, 0, width, height)
+    viewport(0, 0, width, height)
   }
 }

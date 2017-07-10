@@ -1,11 +1,11 @@
 package eu.lynxware.opengl
 
-import eu.lynxware.texture.Texture
-
 trait GL {
-  val TEXTURE_2D: Int
+  val Texture2D: Int
+  val PackAlignment: Int
+  val ColorBufferBit: Int
 
-  val PACK_ALIGNMENT: Int
-
-  def bindTexture(target: Int, texture: Texture): Unit
+  def clear(mask: Int): Unit
+  def clearColor(red: Float, green: Float, blue: Float, alpha: Float): Unit
+  def viewport(x: Int, y: Int, width: Int, height: Int): Unit
 }
