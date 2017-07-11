@@ -10,14 +10,14 @@ class DisplayMessageActivity extends Activity {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_display_message)
 
-    val intent = getIntent()
+    /*val intent = getIntent()
     val message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE)
     val textView = new TextView(this)
     textView.setTextSize(40)
-    textView.setText(message)
+    textView.setText(message)*/
 
-    val layout = findViewById(R.id.activity_display_message).asInstanceOf[ViewGroup]
-    layout.addView(textView)
+    /*val layout = findViewById(R.id.activity_display_message).asInstanceOf[ViewGroup]
+    layout.addView(textView)*/
   }
 }
 
