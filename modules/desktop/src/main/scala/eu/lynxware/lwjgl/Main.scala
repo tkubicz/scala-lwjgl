@@ -1,10 +1,12 @@
 package eu.lynxware.lwjgl
 
+import eu.lynxware.lwjgl.opengl.GLBinding
 import eu.lynxware.math.Mat4
+import eu.lynxware.playground.CreateShader
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw._
-import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL._
+import org.lwjgl.opengl.GL11._
 import org.lwjgl.system.MemoryUtil._
 
 object Main extends App {
@@ -33,9 +35,14 @@ object Main extends App {
   def init(): Unit = {
     GLFWErrorCallback.createPrint(System.err).set()
 
+
     if (!GLFW.glfwInit()) {
       throw new IllegalStateException("Unable to initialize GLFW")
     }
+
+    GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3)
+    GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 3)
+    GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
 
     // Configure window
     GLFW.glfwDefaultWindowHints()
@@ -72,6 +79,8 @@ object Main extends App {
     createCapabilities()
 
     glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
+
+    new CreateShader(GLBinding)
 
     while (!glfwWindowShouldClose(window)) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)

@@ -7,7 +7,9 @@ import android.app.Activity
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.os.Bundle
+import eu.lynxware.opengl.GL20Binding
 import eu.lynxware.opengl.GL20Binding._
+import eu.lynxware.playground.CreateShader
 
 class OpenGLES20Activity extends Activity {
   override def onCreate(savedInstanceState: Bundle): Unit = {
@@ -28,7 +30,9 @@ class MyGLSurfaceView(context: Context) extends GLSurfaceView(context) {
 class MyGLRenderer extends GLSurfaceView.Renderer {
 
   override def onSurfaceCreated(gl10: GL10, eglConfig: EGLConfig): Unit = {
-    clearColor(1.0f, 0.0f, 0.0f, 1.0f)
+    clearColor(0.0f, 0.5f, 1.0f, 0.0f)
+
+    new CreateShader(GL20Binding)
   }
 
   override def onDrawFrame(gl10: GL10): Unit = {
