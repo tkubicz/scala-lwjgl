@@ -1,3 +1,4 @@
+/*
 package eu.lynxware.lwjgl
 
 import eu.lynxware.lwjgl.opengl.GLBinding
@@ -80,7 +81,7 @@ object Main extends App {
 
     glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
 
-    new CreateShader(GLBinding)
+    //new CreateShader(GLBinding)
 
     while (!glfwWindowShouldClose(window)) {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -88,4 +89,4 @@ object Main extends App {
       glfwPollEvents()
     }
   }
-}
+}*/

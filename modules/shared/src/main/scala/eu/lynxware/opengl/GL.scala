@@ -2,7 +2,15 @@ package eu.lynxware.opengl
 
 import java.nio.IntBuffer
 
-trait GL {
+/*trait GLSLShader[B] {
+  val handle: B
+}*/
+
+abstract class GLSLShader[A] {
+  val handle: A
+}
+
+trait GL[ShaderHandleType <: Any] {
   val Texture2D: Int
   val PackAlignment: Int
   val ColorBufferBit: Int
@@ -17,10 +25,9 @@ trait GL {
   def clearColor(red: Float, green: Float, blue: Float, alpha: Float): Unit
   def viewport(x: Int, y: Int, width: Int, height: Int): Unit
 
-  def createShader(shaderType: Int): Int
-  def compileShader(shader: Int): Unit
-  def shaderSource(shader: Int, source: String): Unit
-
-  def getShaderiv(shader: Int, name: Int, params: IntBuffer): Unit
-  def getShaderInfoLog(shader: Int): String
+  def createShader(shaderType: Int): GLSLShader[ShaderHandleType]
+  def compileShader(shader: GLSLShader[ShaderHandleType]): Unit
+  def shaderSource(shader: GLSLShader[ShaderHandleType], source: String): Unit
+  def getShaderiv(shader: GLSLShader[ShaderHandleType], name: Int, params: IntBuffer): Unit
+  def getShaderInfoLog(shader: GLSLShader[ShaderHandleType]): String
 }

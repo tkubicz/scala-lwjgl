@@ -1,8 +1,9 @@
+/*
 package eu.lynxware.lwjgl.opengl
 
 import java.nio.IntBuffer
 
-import eu.lynxware.opengl.GL
+import eu.lynxware.opengl.{GL, GLSLShader}
 import org.lwjgl.opengl.{GL11, GL20, GL32}
 
 object GLBinding extends GL {
@@ -22,13 +23,24 @@ object GLBinding extends GL {
 
   override def viewport(x: Int, y: Int, width: Int, height: Int): Unit = GL11.glViewport(x, y, width, height)
 
-  override def createShader(shaderType: Int): Int = GL20.glCreateShader(shaderType)
+  override def createShader(shaderType: Int): GLSLShader[_] = {
+    val handle = GL20.glCreateShader(shaderType)
+    Shader(handle)
+  }
 
-  override def compileShader(shader: Int): Unit = GL20.glCompileShader(shader)
+  override def compileShader[T <: Int](shader: GLSLShader[T]): Unit = GL20.glCompileShader(shader.handle)
 
-  override def shaderSource(shader: Int, source: String): Unit = GL20.glShaderSource(shader, source)
+  /*override def createShader[T <: GLSLShader[Int]](shaderType: Int): GLSLShader[Int] = {
+    val handle = GL20.glCreateShader(shaderType)
+    Shader(handle)
+  }*/
 
-  override def getShaderiv(shader: Int, name: Int, params: IntBuffer): Unit = GL20.glGetShaderiv(shader, name, params)
+  /*override def compileShader[T <: GLSLShader[Int]](shader: T): Unit = GL20.glCompileShader(shader.handle)
 
-  override def getShaderInfoLog(shader: Int): String = GL20.glGetShaderInfoLog(shader)
+  override def shaderSource[T <: GLSLShader[Int]](shader: T, source: String): Unit = GL20.glShaderSource(shader.handle, source)
+
+  override def getShaderiv[T <: GLSLShader[Int]](shader: T, name: Int, params: IntBuffer): Unit = GL20.glGetShaderiv(shader.handle, name, params)
+
+  override def getShaderInfoLog[T <: GLSLShader[Int]](shader: T): String = GL20.glGetShaderInfoLog(shader.handle)*/
 }
+*/
