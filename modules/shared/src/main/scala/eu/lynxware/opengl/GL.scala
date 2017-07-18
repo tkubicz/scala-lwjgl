@@ -26,6 +26,7 @@ trait GL[ShaderHandleType <: Any] {
   def viewport(x: Int, y: Int, width: Int, height: Int): Unit
 
   def createShader(shaderType: Int): GLSLShader[ShaderHandleType]
+  def deleteShader(shader: GLSLShader[ShaderHandleType]): Unit
   def compileShader(shader: GLSLShader[ShaderHandleType]): Unit
   def shaderSource(shader: GLSLShader[ShaderHandleType], source: String): Unit
   def getShaderiv(shader: GLSLShader[ShaderHandleType], name: Int, params: IntBuffer): Unit

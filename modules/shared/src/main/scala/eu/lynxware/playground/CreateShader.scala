@@ -36,4 +36,6 @@ class CreateShader[ShaderHandleType](gl: GL[ShaderHandleType]) {
     val infoLog = gl.getShaderInfoLog(vertexShader)
     println("info log: " + infoLog)
   }
+
+  gl.deleteShader(vertexShader)
 }

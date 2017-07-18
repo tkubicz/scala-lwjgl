@@ -29,6 +29,8 @@ object GLES20Binding extends GL[ShaderHandleType] {
 
   override def createShader(shaderType: Int): Shader = Shader(GLES20.glCreateShader(shaderType))
 
+  override def deleteShader(shader: GLSLShader[ShaderHandleType]): Unit = GLES20.glDeleteShader(shader.handle)
+
   override def compileShader(shader: GLSLShader[Int]): Unit = GLES20.glCompileShader(shader.handle)
 
   override def shaderSource(shader: GLSLShader[Int], source: String): Unit = GLES20.glShaderSource(shader.handle)

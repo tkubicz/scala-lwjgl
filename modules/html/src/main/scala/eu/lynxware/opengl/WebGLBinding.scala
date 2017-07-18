@@ -12,6 +12,7 @@ object Types {
 case class Shader(handle: ShaderHandleType) extends GLSLShader[ShaderHandleType]
 
 class WebGLBinding(gl: WebGLRenderingContext) extends GL[ShaderHandleType] {
+
   override val Texture2D: Int = WebGLRenderingContext.TEXTURE_2D
   override val PackAlignment: Int = WebGLRenderingContext.PACK_ALIGNMENT
   override val ColorBufferBit: Int = WebGLRenderingContext.COLOR_BUFFER_BIT
@@ -27,6 +28,8 @@ class WebGLBinding(gl: WebGLRenderingContext) extends GL[ShaderHandleType] {
   override def viewport(x: Int, y: Int, width: Int, height: Int): Unit = gl.viewport(x, y, width, height)
 
   override def createShader(shaderType: Int): GLSLShader[WebGLShader] = Shader(gl.createShader(shaderType))
+
+  override def deleteShader(shader: GLSLShader[ShaderHandleType]): Unit = gl.deleteShader(shader.handle)
 
   override def compileShader(shader: GLSLShader[WebGLShader]): Unit = gl.compileShader(shader.handle)
 
