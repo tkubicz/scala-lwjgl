@@ -2,17 +2,19 @@ package eu.lynxware.lwjgl.opengl
 
 import java.nio.IntBuffer
 
-import eu.lynxware.lwjgl.opengl.Types.ShaderHandleType
-import eu.lynxware.opengl.{GL, GLSLShader}
+import eu.lynxware.lwjgl.opengl.Types.{ProgramHandleType, ShaderHandleType}
+import eu.lynxware.opengl.{GL, GLSLProgram, GLSLShader}
 import org.lwjgl.opengles.GLES20
 
 object Types {
   type ShaderHandleType = Int
+  type ProgramHandleType = Int
 }
 
 case class Shader(handle: ShaderHandleType) extends GLSLShader[ShaderHandleType]
+case class Program(handle: ProgramHandleType) extends GLSLProgram[ProgramHandleType]
 
-object GLES20Binding extends GL[ShaderHandleType] {
+object GLES20Binding extends GL[ShaderHandleType, ProgramHandleType] {
   override val Texture2D: Int = GLES20.GL_TEXTURE_2D
   override val PackAlignment: Int = GLES20.GL_PACK_ALIGNMENT
   override val ColorBufferBit: Int = GLES20.GL_COLOR_BUFFER_BIT
@@ -20,6 +22,9 @@ object GLES20Binding extends GL[ShaderHandleType] {
   override val FragmentShader: Int = GLES20.GL_FRAGMENT_SHADER
   override val GeometryShader: Int = -1 //throw new Exception("Not supported in this version")
   override val CompileStatus: Int = GLES20.GL_COMPILE_STATUS
+  override val DeleteStatus: Int = GLES20.GL_DELETE_STATUS
+  override val LinkStatus: Int = GLES20.GL_LINK_STATUS
+  override val ValidateStatus: Int = GLES20.GL_VALIDATE_STATUS
 
   override def clear(mask: Int): Unit = GLES20.glClear(mask)
 
@@ -38,4 +43,14 @@ object GLES20Binding extends GL[ShaderHandleType] {
   override def getShaderiv(shader: GLSLShader[Int], name: Int, params: IntBuffer): Unit = GLES20.glGetShaderiv(shader.handle, name, params)
 
   override def getShaderInfoLog(shader: GLSLShader[Int]): String = GLES20.glGetShaderInfoLog(shader.handle)
+
+  override def createProgram(): GLSLProgram[ProgramHandleType] = Program(GLES20.glCreateProgram())
+
+  override def deleteProgram(program: GLSLProgram[ProgramHandleType]): Unit = GLES20.glDeleteProgram(program.handle)
+
+  override def attachShader(program: GLSLProgram[ProgramHandleType], shader: GLSLShader[ShaderHandleType]): Unit = GLES20.glAttachShader(program.handle, shader.handle)
+
+  override def linkProgram(program: GLSLProgram[ProgramHandleType]): Unit = GLES20.glLinkProgram(program.handle)
+
+  override def getProgramiv(program: GLSLProgram[ProgramHandleType], name: Int, params: IntBuffer): Unit = GLES20.glGetProgramiv(program.handle, name, params)
 }

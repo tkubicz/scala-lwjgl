@@ -1,7 +1,7 @@
-name := "lwjgl_test"
+name := "graphics-engine"
 version in ThisBuild := "0.0.1-SNAPSHOT"
-scalaVersion in ThisBuild := "2.11.8"
-javacOptions in Compile ++= Seq("-source", "1.7", "-target", "1.7")
+scalaVersion in ThisBuild := "2.11.11"
+javacOptions in ThisBuild ++= Seq("-source", "1.7", "-target", "1.7")
 
 lazy val sharedJvm = shared.jvm
 lazy val sharedJs = shared.js

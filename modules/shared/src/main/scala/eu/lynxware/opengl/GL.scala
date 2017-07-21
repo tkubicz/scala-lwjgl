@@ -10,7 +10,11 @@ abstract class GLSLShader[A] {
   val handle: A
 }
 
-trait GL[ShaderHandleType <: Any] {
+abstract class GLSLProgram[A] {
+  val handle: A
+}
+
+trait GL[ShaderHandleType <: Any, ProgramHandleType <: Any] {
   val Texture2D: Int
   val PackAlignment: Int
   val ColorBufferBit: Int
@@ -20,6 +24,9 @@ trait GL[ShaderHandleType <: Any] {
   val GeometryShader: Int
 
   val CompileStatus: Int
+  val DeleteStatus: Int
+  val LinkStatus: Int
+  val ValidateStatus: Int
 
   def clear(mask: Int): Unit
   def clearColor(red: Float, green: Float, blue: Float, alpha: Float): Unit
@@ -31,4 +38,10 @@ trait GL[ShaderHandleType <: Any] {
   def shaderSource(shader: GLSLShader[ShaderHandleType], source: String): Unit
   def getShaderiv(shader: GLSLShader[ShaderHandleType], name: Int, params: IntBuffer): Unit
   def getShaderInfoLog(shader: GLSLShader[ShaderHandleType]): String
+
+  def createProgram(): GLSLProgram[ProgramHandleType]
+  def deleteProgram(program: GLSLProgram[ProgramHandleType]): Unit
+  def attachShader(program: GLSLProgram[ProgramHandleType], shader: GLSLShader[ShaderHandleType]): Unit
+  def linkProgram(program: GLSLProgram[ProgramHandleType]): Unit
+  def getProgramiv(program: GLSLProgram[ProgramHandleType], name: Int, params: IntBuffer)
 }
