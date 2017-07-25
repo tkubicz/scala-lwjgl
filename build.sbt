@@ -15,9 +15,10 @@ lazy val android = Project(id = "android", base = file("modules/android"))
   .dependsOn(sharedJvm)
 
 lazy val html = Project(id = "html", base = file("modules/html"))
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSPlugin, WorkbenchPlugin)
   .settings(
-    libraryDependencies ++= Dependencies.htmlDependencies
+    libraryDependencies ++= Dependencies.htmlDependencies,
+    scalaJSUseMainModuleInitializer := true
     //persistLauncher in Compile := true,
     //persistLauncher in Test := false
   )
@@ -32,6 +33,10 @@ lazy val desktop = Project(id = "desktop", base = file("modules/desktop"))
   .dependsOn(sharedJvm)
 
 lazy val shared = crossProject.crossType(CrossType.Pure).in(file("modules/shared"))
+  .jsSettings(
+    libraryDependencies ++= Dependencies.sharedDependenciesJs
+  )
   .jvmSettings(
+    libraryDependencies ++= Dependencies.sharedDependencies,
     exportJars := true
   )

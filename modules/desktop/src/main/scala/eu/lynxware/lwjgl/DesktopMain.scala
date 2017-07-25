@@ -2,17 +2,21 @@ package eu.lynxware.lwjgl
 
 import eu.lynxware.lwjgl.opengl.GLES20Binding
 import eu.lynxware.playground.CreateShader
+import org.lwjgl.egl.EGL10._
 import org.lwjgl.egl._
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw.GLFWNativeEGL._
 import org.lwjgl.glfw.{Callbacks, GLFWErrorCallback, GLFWKeyCallback}
-import org.lwjgl.egl.EGL10._
 import org.lwjgl.opengles.GLES20._
 import org.lwjgl.opengles.{GLES, GLESCapabilities}
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil._
+import slogging.{LazyLogging, LogLevel, LoggerConfig, SLF4JLoggerFactory}
 
-object GLESWindow extends App {
+object DesktopMain extends App with LazyLogging {
+
+  LoggerConfig.factory = SLF4JLoggerFactory()
+  LoggerConfig.level = LogLevel.TRACE
 
   GLFWErrorCallback.createPrint.set()
   if (!glfwInit()) {
@@ -65,6 +69,8 @@ object GLESWindow extends App {
   println("GL_VENDOR: " + glGetString(GL_VENDOR))
   println("GL_COLOR_BUFFER: " + glGetString(GL_VERSION))
   println("GL_RENDERER: " + glGetString(GL_RENDERER))
+
+  logger.debug("This is some kind of a debug log")
 
   // Render with OpenGL ES
   glfwShowWindow(window)

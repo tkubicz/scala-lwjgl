@@ -2,19 +2,24 @@ package eu.lynxware.lwjgl.opengl
 
 import java.nio.IntBuffer
 
-import eu.lynxware.lwjgl.opengl.Types.{ProgramHandleType, ShaderHandleType}
+import eu.lynxware.lwjgl.opengl.Types.{AttribLocationType, ProgramHandleType, ShaderHandleType, UniformLocationType}
 import eu.lynxware.opengl.{GL, GLSLProgram, GLSLShader}
 import org.lwjgl.opengles.GLES20
 
 object Types {
   type ShaderHandleType = Int
   type ProgramHandleType = Int
+  type UniformLocationType = Int
+  type AttribLocationType = Int
 }
 
 case class Shader(handle: ShaderHandleType) extends GLSLShader[ShaderHandleType]
-case class Program(handle: ProgramHandleType) extends GLSLProgram[ProgramHandleType]
 
-object GLES20Binding extends GL[ShaderHandleType, ProgramHandleType] {
+case class Program(handle: ProgramHandleType,
+                   override val uniforms: Map[String, UniformLocationType] = Map(),
+                   override val attribs: Map[String, AttribLocationType] = Map()) extends GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]
+
+object GLES20Binding extends GL[ShaderHandleType, ProgramHandleType, UniformLocationType, AttribLocationType] {
   override val Texture2D: Int = GLES20.GL_TEXTURE_2D
   override val PackAlignment: Int = GLES20.GL_PACK_ALIGNMENT
   override val ColorBufferBit: Int = GLES20.GL_COLOR_BUFFER_BIT
@@ -44,13 +49,27 @@ object GLES20Binding extends GL[ShaderHandleType, ProgramHandleType] {
 
   override def getShaderInfoLog(shader: GLSLShader[Int]): String = GLES20.glGetShaderInfoLog(shader.handle)
 
-  override def createProgram(): GLSLProgram[ProgramHandleType] = Program(GLES20.glCreateProgram())
+  override def createProgram(): GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType] =
+    Program(GLES20.glCreateProgram())
 
-  override def deleteProgram(program: GLSLProgram[ProgramHandleType]): Unit = GLES20.glDeleteProgram(program.handle)
+  override def deleteProgram(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]): Unit =
+    GLES20.glDeleteProgram(program.handle)
 
-  override def attachShader(program: GLSLProgram[ProgramHandleType], shader: GLSLShader[ShaderHandleType]): Unit = GLES20.glAttachShader(program.handle, shader.handle)
+  override def attachShader(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], shader: GLSLShader[ShaderHandleType]): Unit =
+    GLES20.glAttachShader(program.handle, shader.handle)
 
-  override def linkProgram(program: GLSLProgram[ProgramHandleType]): Unit = GLES20.glLinkProgram(program.handle)
+  override def linkProgram(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]): Unit =
+    GLES20.glLinkProgram(program.handle)
 
-  override def getProgramiv(program: GLSLProgram[ProgramHandleType], name: Int, params: IntBuffer): Unit = GLES20.glGetProgramiv(program.handle, name, params)
+  override def getProgramiv(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], name: Int, params: IntBuffer): Unit =
+    GLES20.glGetProgramiv(program.handle, name, params)
+
+  override def getProgramInfoLog(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]): String =
+    GLES20.glGetProgramInfoLog(program.handle)
+
+  override def getUniformLocation(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], name: String): UniformLocationType =
+    GLES20.glGetUniformLocation(program.handle, name)
+
+  override def getAttribLocation(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], name: String): AttribLocationType =
+    GLES20.glGetAttribLocation(program.handle, name)
 }

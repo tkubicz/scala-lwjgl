@@ -3,7 +3,21 @@ import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 
 object Dependencies {
 
+  // common depndencies
+  private val slf4jApi = "org.slf4j" % "slf4j-api" % "1.7.+"
+
+  // desktop depndencies
+  private val logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
+  private val slogging = "biz.enef" %% "slogging" % "0.5.3"
+  private val sloggingSlf4j = "biz.enef" %% "slogging-slf4j" % "0.5.3"
+
+  // android depndencies
+  private val logbackAndroidCore = "com.github.tony19" % "logback-android-core" % "1.1.1-6"
+  private val logbackAndroidClassic = "com.github.tony19" % "logback-android-classic" % "1.1.1-6" exclude("com.google.android", "android")
   private val appCompat = "com.android.support" % "appcompat-v7" % "23.+"
+
+  // html dependencies
+  private val sloggingJs = "biz.enef" %%%! "slogging" % "0.5.3"
   private val scalajsDom = "org.scala-js" %%%! "scalajs-dom" % "0.9.1"
   private val scalajsJQuery = "be.doeraene" %%%! "scalajs-jquery" % "0.9.1"
   private val scalaTags = "com.lihaoyi" %%%! "scalatags" % "0.6.3"
@@ -61,7 +75,10 @@ object Dependencies {
     "org.lwjgl" % "lwjgl-xxhash" % lwjglVersion % "runtime" classifier lwjglNatives
   )
 
-  val htmlDependencies: Seq[ModuleID] = Seq(scalajsDom, scalajsJQuery, scalaTags)
-  val desktopDependencies: Seq[ModuleID] = Seq() ++ lwjgl
-  val androidDependencies: Seq[ModuleID] = Seq(appCompat)
+  val htmlDependencies: Seq[ModuleID] = Seq(sloggingJs, scalajsDom, scalajsJQuery, scalaTags)
+  val desktopDependencies: Seq[ModuleID] = Seq(sloggingSlf4j, logback) ++ lwjgl
+  val androidDependencies: Seq[ModuleID] = Seq(logbackAndroidCore, logbackAndroidClassic, appCompat)
+
+  val sharedDependencies: Seq[ModuleID] = Seq(slf4jApi, slogging)
+  val sharedDependenciesJs: Seq[ModuleID] = Seq(slf4jApi, sloggingJs)
 }

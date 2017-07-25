@@ -2,19 +2,17 @@ package eu.lynxware.opengl
 
 import java.nio.IntBuffer
 
-/*trait GLSLShader[B] {
-  val handle: B
-}*/
-
-abstract class GLSLShader[A] {
+trait GLSLShader[A] {
   val handle: A
 }
 
-abstract class GLSLProgram[A] {
+trait GLSLProgram[A, B, C] {
   val handle: A
+  val uniforms: Map[String, B] = Map()
+  val attribs: Map[String, C] = Map()
 }
 
-trait GL[ShaderHandleType <: Any, ProgramHandleType <: Any] {
+trait GL[ShaderHandleType, ProgramHandleType, UniformLocationType, AttribLocationType] {
   val Texture2D: Int
   val PackAlignment: Int
   val ColorBufferBit: Int
@@ -39,9 +37,13 @@ trait GL[ShaderHandleType <: Any, ProgramHandleType <: Any] {
   def getShaderiv(shader: GLSLShader[ShaderHandleType], name: Int, params: IntBuffer): Unit
   def getShaderInfoLog(shader: GLSLShader[ShaderHandleType]): String
 
-  def createProgram(): GLSLProgram[ProgramHandleType]
-  def deleteProgram(program: GLSLProgram[ProgramHandleType]): Unit
-  def attachShader(program: GLSLProgram[ProgramHandleType], shader: GLSLShader[ShaderHandleType]): Unit
-  def linkProgram(program: GLSLProgram[ProgramHandleType]): Unit
-  def getProgramiv(program: GLSLProgram[ProgramHandleType], name: Int, params: IntBuffer)
+  def createProgram(): GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]
+  def deleteProgram(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]): Unit
+  def attachShader(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], shader: GLSLShader[ShaderHandleType]): Unit
+  def linkProgram(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]): Unit
+  def getProgramiv(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], name: Int, params: IntBuffer): Unit
+  def getProgramInfoLog(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType]): String
+
+  def getUniformLocation(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], name: String): UniformLocationType
+  def getAttribLocation(program: GLSLProgram[ProgramHandleType, UniformLocationType, AttribLocationType], name: String): AttribLocationType
 }

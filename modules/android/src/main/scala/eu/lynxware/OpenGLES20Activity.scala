@@ -10,8 +10,10 @@ import android.os.Bundle
 import eu.lynxware.opengl.GL20Binding
 import eu.lynxware.opengl.GL20Binding._
 import eu.lynxware.playground.CreateShader
+import org.slf4j.LoggerFactory
 
 class OpenGLES20Activity extends Activity {
+
   override def onCreate(savedInstanceState: Bundle): Unit = {
     super.onCreate(savedInstanceState)
 
@@ -22,6 +24,10 @@ class OpenGLES20Activity extends Activity {
 }
 
 class MyGLSurfaceView(context: Context) extends GLSurfaceView(context) {
+
+  val logger = LoggerFactory.getLogger(this.getClass)
+  logger.info("Creating GL Surface View")
+
   setEGLContextClientVersion(2)
   val renderer = new MyGLRenderer()
   setRenderer(renderer)
@@ -29,9 +35,12 @@ class MyGLSurfaceView(context: Context) extends GLSurfaceView(context) {
 
 class MyGLRenderer extends GLSurfaceView.Renderer {
 
-  override def onSurfaceCreated(gl10: GL10, eglConfig: EGLConfig): Unit = {
-    clearColor(0.0f, 0.5f, 1.0f, 0.0f)
+  val logger = LoggerFactory.getLogger(this.getClass)
 
+  override def onSurfaceCreated(gl10: GL10, eglConfig: EGLConfig): Unit = {
+    logger.info("Surface created")
+
+    clearColor(0.5f, 0.5f, 1.0f, 0.0f)
     new CreateShader(GL20Binding)
   }
 
